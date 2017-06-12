@@ -3,6 +3,8 @@ rvm:
 - 2.2.0
 sudo: false
 script: bundle exec rake deploy
+git config user.name "Travis CI"
+git config user.email "anandrajneesh@ooutlook.com"
 env:
   global:
   - secure: fRoNi7LVKpEglC68oOPxXbxP6W3hSLcQKp3W4WeB41PwbcVreDPiDQxEWuOoKST2UdUYZBaAwggxURuNiyYFXXFcqYFLIrt/YxbHUEFX+fIG8BCm/SFEvFZia2Aof1qopkYvZNz+nTStElTJbWOsuoW0qOr3wnR6zEVgcxIbScQRa6ixUELHZJZQtcMhrMAUaK/7DIYcpC9fpQaxdu12MhEeOky/nLgkoEEULVhetzxy0GRIyHNB0kVXcy0aFGgyg5n1Lvu4H+3fkSUWPLpHDsU8Ixa1GKQResG/wizpQzYx7nO/oTm/MtBrMJRu8R5rNYuuvYjYjasGKwpDxdF/Ud04Vpud/M4HxFU7hbKXqbBWt1OpME2C+n/ts/bysdJ7qeTtwKUHV5x/tLQBUOr6dsJwkMmDvskm0+3lasGJLeLTL30o6962hFXupvfbJkwt0wBI2/HeQJhO5UVNaioltN3eEIBJgw6mJ5sT2uzmVyKHgDpoydox6Jq91deMaVyC+X1XFLDqJyFwq+mBMKbMFWlOP8aREO06rmg+dhnb9KM5cGPFSBFBvyo9gykZAs5CCj5UiziL5+Rw3LRyYYMXFsHQ/ukLErsqE64NXq2rZvjbPbC6snkhuJLtNTlsMC7LOupwG6X87uu1F3K+VgARTjQZOA/OwoAP17p4TRMvVdM=

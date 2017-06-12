@@ -1,0 +1,167 @@
+<!doctype html>
+<!--[if IE 9]>
+<html class="lt-ie10" lang="en"> <![endif]-->
+<html class="no-js" lang="en" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="description" content="The Jekyll AsciiDoc Quickstart project is a leg-up in starting your own website hosted on GitHub with content based in AsciiDoc.">
+    <meta name="author" content="Your name goes here">
+    <meta name="copyright" content="Maybe consider a Creative Commons license">
+    <link rel="stylesheet" href="css/foundation.css">
+    <link rel="stylesheet" href="css/font-awesome.css">
+    <link rel="stylesheet" href="css/coderay.css">
+    <link rel="stylesheet" href="css/asciidoctor.css">
+    <script src="js/vendor/modernizr.js"></script>
+    <script src="js/toc.js"></script>
+</head>
+<body>
+
+
+<!-- Nav Bar -->
+
+<nav class="top-bar" data-topbar>
+    <ul class="title-area">
+        <!-- Title Area -->
+        <li class="name">
+            <h1>
+                <a href="">Jekyll AsciiDoc Quickstart</a>
+            </h1>
+        </li>
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    </ul>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-9 columns" role="content">
+
+        <div class="sect2">
+<h3 id="hello-world-example">Hello World Example</h3>
+<div class="paragraph">
+<p>Code reference :
+<a href="https://github.com/GlueCoders/springboot-guide/releases/tag/quickhelloworld" class="bare">https://github.com/GlueCoders/springboot-guide/releases/tag/quickhelloworld</a><br>
+Let&#8217;s add a simple webservice method in the project, to see some action.
+First include <code>spring-boot-starter-web</code> dependency as shown below.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will bring in a lot of dependencies, of which major are related to
+<code>spring-web</code>, <code>tomcat</code>. Now let&#8217;s create a class which we will the start
+point of the application and will also serve as our webservice entry
+point.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>package org.gluecoders.library;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@SpringBootApplication
+@RestController
+public class Application {
+
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+
+    @RequestMapping("/")
+    @GetMapping
+    public String hello(){
+        return "Hi ! Welcome to Spring Boot Guide";
+    }
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now run this class from IDE, Spring Boot logs should appear in console.</p>
+</div>
+<div class="paragraph">
+<p>On browser hit <a href="http://localhost:8080/" class="bare">http://localhost:8080/</a>, and a response will appear in
+return with text "Hi ! Welcome to Spring Boot Guide".</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s start one by one with the details going on in class -
+<code>@SpringBootApplication</code> - Under the hood it enables a lot of
+annotations which are needed to enable Spring to be able to integrate
+with project like <code>ComponentScan</code>, <code>Configuration</code> etc.<br>
+- <code>@RequestController</code> - Notifies Spring that this class is to be mapped
+to incoming HTTP requests.<br>
+- <code>Main method</code> - This is the entry point when project is started. This
+delegates control to <code>SpringApplication</code> which in turn will start
+embedded <code>Tomcat</code> container and bootstrap code and other Spring related
+libraries together.<br>
+- <code>@RequestMapping @GetMapping</code> - Used for configuring mapping of
+<code>hello</code> method to incoming HTTP request. In this case <code>hello</code> method
+will map to <code>/</code> path with <code>GET</code> HTTP method.</p>
+</div>
+</div>
+
+    </div>
+
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+
+    <aside class="large-3 columns">
+
+        <h4>Posts</h4>
+        <ul id="posts" class="posts nav">
+            
+        </ul>
+
+        <div class="panel">
+            <h5>Featured</h5>
+
+            <p>Pork drumstick turkey fugiat. Tri-tip elit turducken pork chop in. Swine short ribs meatball irure bacon
+                nulla pork belly cupidatat meatloaf cow.</p>
+        </div>
+
+    </aside>
+
+    <!-- End Sidebar -->
+</div>
+
+<!-- End Main Content and Sidebar -->
+
+
+<!-- Footer -->
+
+<footer class="row">
+    <div class="large-12 columns">
+        <hr>
+        <div class="row">
+            <div class="large-12 columns">
+                <p>Footer</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="js/vendor/jquery.js"></script>
+<script src="js/foundation.min.js"></script>
+<script>
+$(document).foundation();
+var doc = document.documentElement;
+doc.setAttribute('data-useragent', navigator.userAgent);
+</script>
+</body>
+</html>

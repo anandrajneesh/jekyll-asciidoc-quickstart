@@ -1,0 +1,184 @@
+<!doctype html>
+<!--[if IE 9]>
+<html class="lt-ie10" lang="en"> <![endif]-->
+<html class="no-js" lang="en" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="description" content="The Jekyll AsciiDoc Quickstart project is a leg-up in starting your own website hosted on GitHub with content based in AsciiDoc.">
+    <meta name="author" content="Your name goes here">
+    <meta name="copyright" content="Maybe consider a Creative Commons license">
+    <link rel="stylesheet" href="css/foundation.css">
+    <link rel="stylesheet" href="css/font-awesome.css">
+    <link rel="stylesheet" href="css/coderay.css">
+    <link rel="stylesheet" href="css/asciidoctor.css">
+    <script src="js/vendor/modernizr.js"></script>
+    <script src="js/toc.js"></script>
+</head>
+<body>
+
+
+<!-- Nav Bar -->
+
+<nav class="top-bar" data-topbar>
+    <ul class="title-area">
+        <!-- Title Area -->
+        <li class="name">
+            <h1>
+                <a href="">Jekyll AsciiDoc Quickstart</a>
+            </h1>
+        </li>
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    </ul>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-9 columns" role="content">
+
+        <div class="sect2">
+<h3 id="including-spring-boot-in-project-maven">Including Spring Boot in Project [Maven]</h3>
+<div class="paragraph">
+<p>There are two ways to include and manage Spring Boot dependencies in
+project. One way is to inherit from Spring Boot parent pom, other way is
+to include a dependency on <code>spring-boot-dependencies</code>.<br>
+Code reference :
+<a href="https://github.com/GlueCoders/springboot-guide/releases/tag/includespringboot" class="bare">https://github.com/GlueCoders/springboot-guide/releases/tag/includespringboot</a></p>
+</div>
+<div class="sect3">
+<h4 id="spring-boot-parent-pom">Spring Boot Parent Pom</h4>
+<div class="paragraph">
+<p>By inheriting from Spring Boot parent pom, all the dependencies and
+plugin are managed by the version of parent pom. To inherit from parent
+pom following has to be added in pom.xml</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>  &lt;parent&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+    &lt;version&gt;1.5.4.RELEASE&lt;/version&gt;
+  &lt;/parent&gt;</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="spring-boot-dependencies">spring-boot-dependencies</h4>
+<div class="paragraph">
+<p>In case one cannot inherit Spring Boot parent pom, then alternative is
+to declare a dependency on <code>spring-boot-dependencies</code> under
+<code>dependencies</code> tag as shown below</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>  &lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-dependencies&lt;/artifactId&gt;
+    &lt;version&gt;${spring.version}&lt;/version&gt;
+    &lt;type&gt;pom&lt;/type&gt;
+  &lt;/dependency&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>However this does not manages versions for plugins, in this case version
+has to be explicitly set for plugins.</p>
+</div>
+<div class="paragraph">
+<p>Note : Including Parent pom or <code>spring-boot-dependencies</code> does not
+actually bring in any dependencies, they are just mechanisms to manage
+dependencies related to Spring Boot.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="spring-boot-maven-plugin">Spring Boot Maven Plugin</h4>
+<div class="paragraph">
+<p>Spring Boot Maven plugin runs in package phase to include jars in one
+package, so that application can be bundled as executable jar. Following
+has to be added in <code>plugins</code> for including this plugin.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>  &lt;plugin&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+  &lt;/plugin&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If Spring Boot parent pom is not inherited, then one has to specify execution phase and plugin version explicitly as shown below</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre> &lt;plugin&gt;
+ 	&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+ 	&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+ 	&lt;version&gt;${spring.version}&lt;/version&gt;
+ 	&lt;executions&gt;
+ 		&lt;execution&gt;
+ 			&lt;goals&gt;
+ 				&lt;goal&gt;repackage&lt;/goal&gt;
+ 			&lt;/goals&gt;
+ 		&lt;/execution&gt;
+ 	&lt;/executions&gt;
+ &lt;/plugin&gt;</pre>
+</div>
+</div>
+</div>
+</div>
+
+    </div>
+
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+
+    <aside class="large-3 columns">
+
+        <h4>Posts</h4>
+        <ul id="posts" class="posts nav">
+            
+        </ul>
+
+        <div class="panel">
+            <h5>Featured</h5>
+
+            <p>Pork drumstick turkey fugiat. Tri-tip elit turducken pork chop in. Swine short ribs meatball irure bacon
+                nulla pork belly cupidatat meatloaf cow.</p>
+        </div>
+
+    </aside>
+
+    <!-- End Sidebar -->
+</div>
+
+<!-- End Main Content and Sidebar -->
+
+
+<!-- Footer -->
+
+<footer class="row">
+    <div class="large-12 columns">
+        <hr>
+        <div class="row">
+            <div class="large-12 columns">
+                <p>Footer</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="js/vendor/jquery.js"></script>
+<script src="js/foundation.min.js"></script>
+<script>
+$(document).foundation();
+var doc = document.documentElement;
+doc.setAttribute('data-useragent', navigator.userAgent);
+</script>
+</body>
+</html>

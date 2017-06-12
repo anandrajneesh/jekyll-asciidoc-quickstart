@@ -5,8 +5,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jekyll AsciiDoc Quickstart</title>
-    <meta name="description" content="A forkable blog-ready Jekyll site using AsciiDoc">
+    <title>Spring Boot Guide</title>
+    <meta name="description" content="The Jekyll AsciiDoc Quickstart project is a leg-up in starting your own website hosted on GitHub with content based in AsciiDoc.">
     <meta name="author" content="Your name goes here">
     <meta name="copyright" content="Maybe consider a Creative Commons license">
     <link rel="stylesheet" href="css/foundation.css">
@@ -42,65 +42,797 @@
     <!-- Main Blog Content -->
     <div class="large-9 columns" role="content">
 
-        <h1>Congratulations!</h1>
-<div id="preamble">
-<div class="sectionbody">
-<div class="paragraph">
-<p>You&#8217;ve successfully set up and deployed an Jekyll website powered by AsciiDoc using the <a href="https://github.com/asciidoctor/jekyll-asciidoc-quickstart"><strong>Jekyll AsciiDoc Quickstart</strong></a> project. If everything is in order then changes to the AsciiDoc content will be automatically published to your <code>gh_pages</code> branch and hosted via Jekyll and Github.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="what_do_i_do_now">What do I do now?</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Now that you&#8217;ve set up your website to run with AsciiDoc, you have a ton of options available to you.</p>
-</div>
-<div class="sect2">
-<h3 id="edit_content">Edit content</h3>
-<div class="paragraph">
-<p>Editing content is very simple. The easiest way to update your blog is to clone your repository, fire up your favorite text editor and run the content locally. To do this run the <code>jekyll serve</code> command and open a web browser to <a href="http://localhost:4000" class="bare">http://localhost:4000</a>. Jekyll will automatically process and host changes to the content.</p>
-</div>
-<div class="paragraph">
-<p>You may also edit your content directly on Github. To do this, navigate the browser the file you wish to edit, click the pensil (edit) button in the upper right hand corner of the view and make your changes. When you&#8217;re finished, commit your changes. This will trigger Travis to generate and publish a new website including your changes.</p>
-</div>
-<div class="paragraph">
-<p>For blog posts, Jekyll will recognize files under the <code>_post</code> directory, parse the name and place it in the list of posts. These will show up under the <code>site.posts</code> variable.</p>
-</div>
-<div class="paragraph">
-<p>To display a list of posts, use Jekyll syntax similar to the following:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="html">{% for post in site.posts limit: 5 %}
-<span class="tag">&lt;a</span> <span class="attribute-name">href</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">.{{ post.url }}</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>{{ post.navtitle }}<span class="tag">&lt;/a&gt;</span>
-{% endfor %}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="update_look_and_feel">Update Look and feel</h3>
-<div class="paragraph">
-<p>The layout provided with the <a href="https://github.com/asciidoctor/jekyll-asciidoc-quickstart">Jekyll AsciiDoc Quickstart</a> project is based on <a href="http://foundation.zurb.com">Foundation</a>, a responsive design css framework. You&#8217;re free to update the layout by editing the <code>_layouts/default.html</code> file and css under the <code>css</code> directory.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="reference_documentation">Reference documentation</h3>
-<div class="paragraph">
-<p>The following links will help with detailed explanations on Jekyll and AsciiDoc.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="http://jekyllrb.com">Jekyll</a></p>
+        <div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#spring-boot-guide">1. Spring Boot Guide</a>
+<ul class="sectlevel2">
+<li><a href="#including-spring-boot-in-project-maven">1.1. Including Spring Boot in Project [Maven]</a>
+<ul class="sectlevel3">
+<li><a href="#spring-boot-parent-pom">1.1.1. Spring Boot Parent Pom</a></li>
+<li><a href="#spring-boot-dependencies">1.1.2. spring-boot-dependencies</a></li>
+<li><a href="#spring-boot-maven-plugin">1.1.3. Spring Boot Maven Plugin</a></li>
+</ul>
 </li>
-<li>
-<p><a href="http://asciidoctor.org/docs/asciidoc-syntax-quick-reference/">AsciiDoc Quick Reference</a></p>
+<li><a href="#hello-world-example">1.2. Hello World Example</a></li>
+<li><a href="#getting-started-with-rest-using-spring-mvc">1.3. Getting started with REST using Spring MVC</a>
+<ul class="sectlevel4">
+<li><a href="#entity-definition-book">Entity Definition : Book</a></li>
+<li><a href="#rest-layer-books">REST Layer : Books</a></li>
+<li><a href="#businessservice-layer-bookservice">Business/Service Layer : BookService</a></li>
+</ul>
 </li>
-<li>
-<p><a href="http://asciidoctor.org">Asciidoctor</a></p>
+<li><a href="#testing-rest-controllers-with-spring-test">1.4. Testing REST Controllers with Spring Test</a>
+<ul class="sectlevel3">
+<li><a href="#pom-dependency">1.4.1. POM Dependency</a></li>
+</ul>
+</li>
+<li><a href="#logging-in-spring-boot">1.5. Logging in Spring Boot</a>
+<ul class="sectlevel4">
+<li><a href="#log-levels">Log Levels</a></li>
+<li><a href="#log-patterns">Log Patterns</a></li>
+<li><a href="#log4j2">1.5.3. Log4j2</a></li>
+</ul>
+</li>
+<li><a href="#some-of-the-gotchas-that-one-needs-to-be-careful-about">1.6. Some of the Gotchas that one needs to be careful about</a></li>
+</ul>
 </li>
 </ul>
+</div>
+<div class="sect1">
+<h2 id="spring-boot-guide">1. Spring Boot Guide</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this project, we will explore Spring Boot along with some other
+libraries.</p>
+</div>
+<div class="paragraph">
+<p>Domain for this project would be a Online Library Portal and is
+described <a href="/domain-of-guide.adoc">here</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="including-spring-boot-in-project-maven">1.1. Including Spring Boot in Project [Maven]</h3>
+<div class="paragraph">
+<p>There are two ways to include and manage Spring Boot dependencies in
+project. One way is to inherit from Spring Boot parent pom, other way is
+to include a dependency on <code>spring-boot-dependencies</code>.<br>
+Code reference :
+<a href="https://github.com/GlueCoders/springboot-guide/releases/tag/includespringboot" class="bare">https://github.com/GlueCoders/springboot-guide/releases/tag/includespringboot</a></p>
+</div>
+<div class="sect3">
+<h4 id="spring-boot-parent-pom">1.1.1. Spring Boot Parent Pom</h4>
+<div class="paragraph">
+<p>By inheriting from Spring Boot parent pom, all the dependencies and
+plugin are managed by the version of parent pom. To inherit from parent
+pom following has to be added in pom.xml</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>  &lt;parent&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+    &lt;version&gt;1.5.4.RELEASE&lt;/version&gt;
+  &lt;/parent&gt;</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="spring-boot-dependencies">1.1.2. spring-boot-dependencies</h4>
+<div class="paragraph">
+<p>In case one cannot inherit Spring Boot parent pom, then alternative is
+to declare a dependency on <code>spring-boot-dependencies</code> under
+<code>dependencies</code> tag as shown below</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>  &lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-dependencies&lt;/artifactId&gt;
+    &lt;version&gt;${spring.version}&lt;/version&gt;
+    &lt;type&gt;pom&lt;/type&gt;
+  &lt;/dependency&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>However this does not manages versions for plugins, in this case version
+has to be explicitly set for plugins.</p>
+</div>
+<div class="paragraph">
+<p>Note : Including Parent pom or <code>spring-boot-dependencies</code> does not
+actually bring in any dependencies, they are just mechanisms to manage
+dependencies related to Spring Boot.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="spring-boot-maven-plugin">1.1.3. Spring Boot Maven Plugin</h4>
+<div class="paragraph">
+<p>Spring Boot Maven plugin runs in package phase to include jars in one
+package, so that application can be bundled as executable jar. Following
+has to be added in <code>plugins</code> for including this plugin.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>  &lt;plugin&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+  &lt;/plugin&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If Spring Boot parent pom is not inherited, then one has to specify execution phase and plugin version explicitly as shown below</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre> &lt;plugin&gt;
+ 	&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+ 	&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+ 	&lt;version&gt;${spring.version}&lt;/version&gt;
+ 	&lt;executions&gt;
+ 		&lt;execution&gt;
+ 			&lt;goals&gt;
+ 				&lt;goal&gt;repackage&lt;/goal&gt;
+ 			&lt;/goals&gt;
+ 		&lt;/execution&gt;
+ 	&lt;/executions&gt;
+ &lt;/plugin&gt;</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="hello-world-example">1.2. Hello World Example</h3>
+<div class="paragraph">
+<p>Code reference :
+<a href="https://github.com/GlueCoders/springboot-guide/releases/tag/quickhelloworld" class="bare">https://github.com/GlueCoders/springboot-guide/releases/tag/quickhelloworld</a><br>
+Let&#8217;s add a simple webservice method in the project, to see some action.
+First include <code>spring-boot-starter-web</code> dependency as shown below.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will bring in a lot of dependencies, of which major are related to
+<code>spring-web</code>, <code>tomcat</code>. Now let&#8217;s create a class which we will the start
+point of the application and will also serve as our webservice entry
+point.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>package org.gluecoders.library;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@SpringBootApplication
+@RestController
+public class Application {
+
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+
+    @RequestMapping("/")
+    @GetMapping
+    public String hello(){
+        return "Hi ! Welcome to Spring Boot Guide";
+    }
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now run this class from IDE, Spring Boot logs should appear in console.</p>
+</div>
+<div class="paragraph">
+<p>On browser hit <a href="http://localhost:8080/" class="bare">http://localhost:8080/</a>, and a response will appear in
+return with text "Hi ! Welcome to Spring Boot Guide".</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s start one by one with the details going on in class -
+<code>@SpringBootApplication</code> - Under the hood it enables a lot of
+annotations which are needed to enable Spring to be able to integrate
+with project like <code>ComponentScan</code>, <code>Configuration</code> etc.<br>
+- <code>@RequestController</code> - Notifies Spring that this class is to be mapped
+to incoming HTTP requests.<br>
+- <code>Main method</code> - This is the entry point when project is started. This
+delegates control to <code>SpringApplication</code> which in turn will start
+embedded <code>Tomcat</code> container and bootstrap code and other Spring related
+libraries together.<br>
+- <code>@RequestMapping @GetMapping</code> - Used for configuring mapping of
+<code>hello</code> method to incoming HTTP request. In this case <code>hello</code> method
+will map to <code>/</code> path with <code>GET</code> HTTP method.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="getting-started-with-rest-using-spring-mvc">1.3. Getting started with REST using Spring MVC</h3>
+<div class="paragraph">
+<p>Here basic REST APIs that are needed for <a href="/domain.md">Library sytem</a>
+will be written i.e. CRUD(Create, Retrieve, Update and Delete) REST
+service on entity <code>Book</code>. As per the <a href="/domain.md">specs</a> the
+<code>Retrieve/ Get</code> method will be available to both Member and Admin, only
+the representation will differ. For the simplicity of this topic, same
+representation will be returned in <code>GET</code> call. Different representations
+will be added once security/roles are added to application since the
+implementation or calls may differ. Also handling for exception
+scenarios will be added in later topics.</p>
+</div>
+<div class="paragraph">
+<p>Code reference:
+<a href="https://github.com/GlueCoders/springboot-guide/releases/tag/rest-with-mvc" class="bare">https://github.com/GlueCoders/springboot-guide/releases/tag/rest-with-mvc</a></p>
+</div>
+<div class="sect4">
+<h5 id="entity-definition-book">Entity Definition : Book</h5>
+<div class="paragraph">
+<p>Below is the definition of Book, this is the representation that will be
+mapped to REST responses and requests.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>public class Book implements Serializable {
+
+    private String title;
+    private String author;
+    private int publishedYear;
+    private List&lt;String&gt; categories;
+    private String publisher;
+    private long isbnCode;
+}</pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="rest-layer-books">REST Layer : Books</h5>
+<div class="paragraph">
+<p>This class serves as REST layer which will be mapped to HTTP requests.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>package org.gluecoders.library.rest;
+
+import org.gluecoders.library.models.Book;
+import org.gluecoders.library.services.BookService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController()
+@RequestMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE, path = "/books")
+public class Books {
+
+    @Autowired
+    private BookService bookService;
+
+    @GetMapping
+    public ResponseEntity&lt;List&lt;Book&gt;&gt; getAllBooks() {
+        List&lt;Book&gt; list = bookService.getAllBooks();
+        return new ResponseEntity&lt;&gt;(list, HttpStatus.OK);
+    }
+
+    @GetMapping("/{isbn}")
+    public ResponseEntity&lt;Book&gt; getBook(@PathVariable("isbn") long isbnCode) {
+        Book book = bookService.getBookByISBN(isbnCode);
+        if(book == null) {
+            return new ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND);
+        }else{
+            return new ResponseEntity&lt;&gt;(book, HttpStatus.OK);
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity&lt;Book&gt; addBook(@RequestBody Book book) {
+        book = bookService.addBook(book);
+        return new ResponseEntity&lt;&gt;(book, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{isbn}")
+    public ResponseEntity deleteBook(@PathVariable("isbn") long isbnCode) {
+        bookService.deleteBook(isbnCode);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s go to individual lines : - <code>@RestController</code> - Tells Spring to map
+the methods of this class to HTTP requests.<br>
+- <code>@RequestMapping</code> - Defines the HTTP path that should be mapped to the
+controller class. - <code>@GetMapping . @PostMapping, @DeleteMapping</code> - These
+annotations are flavoured <code>@RequestMapping</code> which define HTTP methods as
+well. These annotations have parameters for HTTP path, Content-Type and
+Accept parameters.<br>
+- <code>ResponseEntity</code> - This is used to return response body, headers and
+status code.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="businessservice-layer-bookservice">Business/Service Layer : BookService</h5>
+<div class="paragraph">
+<p>Below is the interface to be consumed by REST layer in our application.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>public interface BookService {
+
+    List&lt;Book&gt; getAllBooks();
+
+    Book addBook(Book book);
+
+    Book getBookByISBN(long isbn);
+
+    void deleteBook(long isbn);
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Below is the default implementation of this interface, which as of now
+will do nothing but just return null or empty lists as required from
+signature.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>package org.gluecoders.library.services;
+
+import org.gluecoders.library.models.Book;
+import org.springframework.stereotype.Component;
+
+import java.util.Collections;
+import java.util.List;
+
+@Component
+public class DefaultBookService implements BookService {
+
+
+    @Override
+    public List&lt;Book&gt; getAllBooks() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public Book addBook(Book book) {
+        return book;
+    }
+
+    @Override
+    public Book getBookByISBN(long isbn) {
+        return null;
+    }
+
+    @Override
+    public void deleteBook(long isbn) {
+
+    }
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>@Component</code> is a Spring annotation which creates a instance of the
+class and registers it in Bean Registry. Anywhere this bean&#8217;s instance
+can be acquired by using <code>@Autowired</code> annotation as shown in REST layer.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="testing-rest-controllers-with-spring-test">1.4. Testing REST Controllers with Spring Test</h3>
+<div class="paragraph">
+<p>In <a href="/rest-with-mvc.md">previous guide</a>, REST Controller for <code>Books</code>
+was created. It is a good practice to keep the test cases upto speed
+with development. Here let&#8217;s explore how to unit test REST methods.<br>
+Code reference:
+<a href="https://github.com/GlueCoders/springboot-guide/releases/tag/rest-with-mvc" class="bare">https://github.com/GlueCoders/springboot-guide/releases/tag/rest-with-mvc</a></p>
+</div>
+<div class="sect3">
+<h4 id="pom-dependency">1.4.1. POM Dependency</h4>
+<div class="paragraph">
+<p>Include following dependency in <code>pom.xml</code> file.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;dependency&gt;
+   &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+   &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+   &lt;version&gt;${spring.version}&lt;/version&gt;
+&lt;/dependency&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will include libraries for <code>Spring Test</code>, <code>Mockito</code>, <code>Hamcrest</code> and
+other useful third party libraries required during unit testing.</p>
+</div>
+<div class="sect4">
+<h5 id="webmvctest">@WebMvcTest</h5>
+<div class="paragraph">
+<p>To test Spring MVC Controllers <code>@WebMvcTest</code> annotation is used. This
+annotation scans for all MVC related components and will not include
+regular <code>@Component</code> classes. This is often used to test one controller
+class at a time and is combined with Mockito framework to mock the
+dependencies. Spring has <code>@MockBean</code> annotation which plays nice with
+Mockito library.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="test-class-definition">Test Class Definition</h5>
+<div class="literalblock">
+<div class="content">
+<pre>@RunWith(SpringRunner.class)
+@WebMvcTest(Books.class)
+public class BooksTest {
+
+   @Autowired
+   private MockMvc mvc;
+
+   @MockBean
+   private BookService bookService;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>@RunWith</code> defines the runner class that is to be used to run test
+cases, <code>SpringRunner</code> is the defacto choice since <code>Spring</code> is used
+pretty much for everything in the application.<br>
+<code>@WebMvcTest</code> takes the class of controller that is under test. This
+will start the web application context, embedded servlet container is
+not used and this keeps testing lightweight.<br>
+<code>MockMvc</code> is the helper class which provides syntax to call controller
+classes as HTTP requests. It also define methods for expectations on
+HTTP response.<br>
+<code>@MockBean</code> creates a Mockito mock of the <code>BookService</code> which is a
+dependency for <code>Books</code> controller. By having mock we can control the
+behavior of dependencies without calling the real method and really just
+focus on unit testing of controller class. To control the behavior of
+<code>bookService</code>, a <code>Behavior</code> nested class has been defined in this test
+cases which will be shown later.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="mockmvc-helper">MockMvc Helper</h5>
+<div class="paragraph">
+<p>Following are the usages of <code>MockMvc</code> instance <code>mvc</code> to perform unit
+testing on REST methods.</p>
+</div>
+<div id="get-method" class="paragraph">
+<p>GET Method</p>
+</div>
+<div class="paragraph">
+<p>Following test case corresponds to <code>getAllBooks()</code> method in <code>Books</code>
+controller.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>@Test
+    public void getAllBooks_NoBooks() throws Exception {
+        Behavior.set(bookService).hasNoBooks();
+        mvc
+                .perform(get("/books"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json("[]"));
+        verify(bookService, times(1)).getAllBooks();
+    }</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>.perform(..</code> is analogous to making an HTTP request to REST
+controller.<br>
+<code>get("/books")</code> defines that a HTTP GET request has to be made on
+'/books' path.<br>
+<code>.andExpect(..</code> can be used to set expectations on HTTP response
+received from controller class such as <code>status().isOk()</code> means that HTTP
+response code should be <code>200</code>.<br>
+<code>content().json([])</code> means that response body should match json content
+that is given in <code>json()</code> method.<br>
+<code>content().contentType(&#8230;&#8203;</code> means that <code>Content-Type</code> header should
+match the value as given in method.<br>
+<code>Behavior</code> is a custom class which is setting Mockito methods on
+<code>bookService</code>.</p>
+</div>
+<div id="post-method" class="paragraph">
+<p>POST Method</p>
+</div>
+<div class="paragraph">
+<p>Following test case corresponds to <code>addBook()</code> method in <code>Books</code>
+controller.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>@Test
+    public void addBook_Positive() throws Exception {
+        Behavior.set(bookService).returnSame();
+        String bookContent = mapper.writeValueAsString(effectiveJavaBook);
+        mvc
+                .perform(post("/books")
+                        .content(bookContent)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(bookContent));
+        verify(bookService, times(1)).addBook(effectiveJavaBook);
+    }</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>post(..</code> defines to make an HTTP POST request along with content and
+content-type defined in methods.<br>
+<code>mapper</code> here is the instance of <code>Jackson</code> <code>ObjectMapper</code> which allows
+for serialization and deserialization of POJOs to and from JSON.</p>
+</div>
+<div id="delete-method" class="paragraph">
+<p>DELETE Method</p>
+</div>
+<div class="paragraph">
+<p>Following test case corresponds to <code>deleteBook()</code> method in <code>Books</code>
+controller.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>@Test
+    public void deleteBook() throws Exception {
+        mvc
+                .perform(delete("/books/1234567899"))
+                .andExpect(status().isOk());
+        verify(bookService, times(1)).deleteBook(anyLong());
+    }</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>delete("/books&#8230;&#8203;")</code> defines to make an HTTP DELETE request.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="mockito-usage">Mockito Usage</h5>
+<div class="paragraph">
+<p>Let&#8217;s also explore some of the Mockito methods that are being used in
+this class.</p>
+</div>
+<div id="verify" class="paragraph">
+<p>verify()</p>
+</div>
+<div class="paragraph">
+<p><code>verify</code> method is used to verify the number of times a mock method has
+been called. This is especially useful to test conditional statements,
+since if test case does not expect that code flow to enter a certain
+condition statement then the methods inside that block should not be
+called even once.<br>
+It&#8217;s signature is <code>verify(T mock, VerificationMode mode)</code> where <code>T</code>
+corresponds to mocked bean and <code>mode</code> refers to number of times methods
+should be called. It can also be used to match the parameters received
+by mock method as shown below</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>verify(bookService, times(1)).getBookByISBN(effectiveJavaBook.getIsbnCode());</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This means that method <code>getBookByISBN</code> of bean <code>bookService</code> should be
+called only once during execution of test case. Also the parameter
+received by the method is verified by giving the exact argument as here
+<code>effectiveJavaBook.getIsbnCode()</code>.</p>
+</div>
+<div id="when-doreturn-thenreturn" class="paragraph">
+<p>when() doReturn() thenReturn()</p>
+</div>
+<div class="paragraph">
+<p>These constructs are used to set expectations on mocked beans. Let&#8217;s see
+an example first :</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>when(bookService.getBookByISBN(book.getIsbnCode())).thenReturn(book);
+when(bookService.addBook(book)).thenReturn(book);
+when(bookService.getAllBooks()).thenReturn(Collections.emptyList());
+when(bookService.addBook(any())).thenAnswer(invocationOnMock -&gt; invocationOnMock.getArguments()[0]);</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>First example defines that if <code>getBookByISBN</code> is invoked with some
+<code>isbnCode</code> then it should return the same book, since the <code>isbnCode</code> is
+also fetched from the same instance of <code>book</code>.<br>
+Second example defines that <code>addBook</code> should return the <code>book</code> instance
+if it is called with the same <code>book</code> instance.<br>
+Third example defines that <code>getAllBooks</code> should return <code>emptyList</code> if it
+is invoked.<br>
+Fourth example defines that <code>addBook</code> should return the same instance
+that it receives as parameter. Note here there is no predefined <code>book</code>
+instance so this will work for any argument passed to <code>addBook</code>, however
+in second example it will only work for that instance of <code>book</code> which
+has been used in <code>when(..</code> clause.</p>
+</div>
+<div class="paragraph">
+<p>The whole class <code>BooksTest</code> can be referred in <code>src/tests/java</code>
+directory under <code>org.gluecoders.library.rest</code> package.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="logging-in-spring-boot">1.5. Logging in Spring Boot</h3>
+<div class="paragraph">
+<p>By default Spring Boot includes <code>logback</code> and <code>slf4j</code> dependencies, so
+any application can use <code>SLF4J</code> libraries for logging. Default
+configuration is to log output in console.<br>
+Code reference:
+<a href="https://github.com/GlueCoders/springboot-guide/releases/tag/logging" class="bare">https://github.com/GlueCoders/springboot-guide/releases/tag/logging</a> <mark>#</mark>#
+Output to file<br>
+To output in a file add following line to the <code>application.properties</code>
+in <code>src/main/resources</code> folder.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>logging.file=custom.log</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Log file rotate automatically after 10mb is reached.</p>
+</div>
+<div class="sect4">
+<h5 id="log-levels">Log Levels</h5>
+<div class="paragraph">
+<p>To control log levels, it can be done by adding package controls in
+<code>application.properties</code> as shown below.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>logging.level.root=WARN
+logging.level.org.springframework.web=INFO
+logging.level.org.gluecodders.library=DEBUG</pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="log-patterns">Log Patterns</h5>
+<div class="paragraph">
+<p><code>logging.pattern.file</code> for logging pattern for file appenders. Similarly
+<code>logging.pattern.console</code> for logging pattern for console appenders.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="log4j2">1.5.3. Log4j2</h4>
+<div class="paragraph">
+<p>Let&#8217;s include log4j2 in the project and look at the available
+configurations.</p>
+</div>
+<div class="sect4">
+<h5 id="pom-dependency">POM Dependency</h5>
+<div class="literalblock">
+<div class="content">
+<pre>   &lt;dependency&gt;
+       &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+       &lt;artifactId&gt;spring-boot-starter&lt;/artifactId&gt;
+       &lt;version&gt;${spring.version}&lt;/version&gt;
+       &lt;exclusions&gt;
+            &lt;exclusion&gt;
+               &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+               &lt;artifactId&gt;spring-boot-starter-logging&lt;/artifactId&gt;
+           &lt;/exclusion&gt;
+       &lt;/exclusions&gt;
+   &lt;/dependency&gt;
+   &lt;dependency&gt;
+       &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+       &lt;artifactId&gt;spring-boot-starter-log4j2&lt;/artifactId&gt;
+       &lt;version&gt;${spring.version}&lt;/version&gt;
+   &lt;/dependency&gt;</pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="basic-configuration">Basic Configuration</h5>
+<div class="paragraph">
+<p>Log4j2 supports xml, yaml, json and properties configuration. For
+verbosity let&#8217;s explore XML configuration.</p>
+</div>
+<div class="paragraph">
+<p>For simple console output below xml will work fine.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;Configuration status="WARN"&gt;
+    &lt;Appenders&gt;
+        &lt;Console name="Console" target="SYSTEM_OUT"&gt;
+            &lt;PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/&gt;
+        &lt;/Console&gt;
+    &lt;/Appenders&gt;
+    &lt;Loggers&gt;
+        &lt;logger name="org.gluecoders.library" level="debug" additivity="false"&gt;
+            &lt;AppenderRef ref="Console"/&gt;
+        &lt;/logger&gt;
+        &lt;Root level="info"&gt;
+            &lt;AppenderRef ref="Console"/&gt;
+        &lt;/Root&gt;
+    &lt;/Loggers&gt;
+&lt;/Configuration&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This configuration defines two loggers one is RootLogger and other is
+for application&#8217;s package org.gluecoders.library. Only console appender
+is declared here, so all the logs will be logged to console output.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="json-layout-configuration">JSON Layout Configuration</h5>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;Appenders&gt;
+   &lt;Console name="Console" target="SYSTEM_OUT"&gt;
+      &lt;JsonLayout compact="true" eventEol="true"/&gt;
+   &lt;/Console&gt;
+&lt;/Appenders&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will log statements in json format which might be useful if the log
+output goes to analytics platform like Elasticsearch.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="file-appender-configuration">File Appender Configuration</h5>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;File  name="File" fileName="app.log"&gt;
+   &lt;JsonLayout compact="true" eventEol="true"/&gt;
+&lt;/File&gt;</pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="rolling-file-appendr-configuration">Rolling File Appendr Configuration</h5>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;RollingFile name="Rolling" fileName="app.log" filePattern="target/rolling1/app.%i.log.gz"&gt;
+   &lt;JsonLayout compact="true" eventEol="true"/&gt;
+   &lt;SizeBasedTriggeringPolicy size="500" /&gt;
+&lt;/RollingFile&gt;</pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="configuring-logging-for-different-packages">Configuring logging for different packages</h5>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;logger name="org.springframework" level="error" additivity="false"&gt;
+   &lt;AppenderRef ref="Console"/&gt;
+&lt;/logger&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To control logging of third party libraries and other packages,
+different logger configurations can be added as shown above.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="some-of-the-gotchas-that-one-needs-to-be-careful-about">1.6. Some of the Gotchas that one needs to be careful about</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Default Package</strong> - When a class doesn’t include a package
+declaration it is considered to be in the “default package”. The use of
+the “default package” is generally discouraged, and should be avoided.
+It can cause particular problems for Spring Boot applications that use
+<code>@ComponentScan</code>, <code>@EntityScan</code> or <code>@SpringBootApplication</code> annotations,
+since every class from every jar, will be read.</p>
+</li>
+<li>
+<p><strong>Unit Testing with WebMvcTest and JsonTest</strong> - A unit test class
+cannot have both <code>@WebMcvTest</code> and <code>@JsonTest</code> annotations. It is better
+to use <code>ObjectMapper</code> explicitly for conversion of JSON and POJOs.
+3.</p>
+</li>
+</ol>
 </div>
 </div>
 </div>
@@ -116,8 +848,6 @@
 
         <h4>Posts</h4>
         <ul id="posts" class="posts nav">
-            
-            <li><a href="./2015/01/01/first-entry.html">First Entry</a></li>
             
         </ul>
 

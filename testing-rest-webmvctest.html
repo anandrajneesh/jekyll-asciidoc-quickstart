@@ -1,0 +1,327 @@
+<!doctype html>
+<!--[if IE 9]>
+<html class="lt-ie10" lang="en"> <![endif]-->
+<html class="no-js" lang="en" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="description" content="The Jekyll AsciiDoc Quickstart project is a leg-up in starting your own website hosted on GitHub with content based in AsciiDoc.">
+    <meta name="author" content="Your name goes here">
+    <meta name="copyright" content="Maybe consider a Creative Commons license">
+    <link rel="stylesheet" href="css/foundation.css">
+    <link rel="stylesheet" href="css/font-awesome.css">
+    <link rel="stylesheet" href="css/coderay.css">
+    <link rel="stylesheet" href="css/asciidoctor.css">
+    <script src="js/vendor/modernizr.js"></script>
+    <script src="js/toc.js"></script>
+</head>
+<body>
+
+
+<!-- Nav Bar -->
+
+<nav class="top-bar" data-topbar>
+    <ul class="title-area">
+        <!-- Title Area -->
+        <li class="name">
+            <h1>
+                <a href="">Jekyll AsciiDoc Quickstart</a>
+            </h1>
+        </li>
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    </ul>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-9 columns" role="content">
+
+        <div class="sect2">
+<h3 id="testing-rest-controllers-with-spring-test">Testing REST Controllers with Spring Test</h3>
+<div class="paragraph">
+<p>In <a href="/rest-with-mvc.md">previous guide</a>, REST Controller for <code>Books</code>
+was created. It is a good practice to keep the test cases upto speed
+with development. Here let&#8217;s explore how to unit test REST methods.<br>
+Code reference:
+<a href="https://github.com/GlueCoders/springboot-guide/releases/tag/rest-with-mvc" class="bare">https://github.com/GlueCoders/springboot-guide/releases/tag/rest-with-mvc</a></p>
+</div>
+<div class="sect3">
+<h4 id="pom-dependency">POM Dependency</h4>
+<div class="paragraph">
+<p>Include following dependency in <code>pom.xml</code> file.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;dependency&gt;
+   &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+   &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+   &lt;version&gt;${spring.version}&lt;/version&gt;
+&lt;/dependency&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will include libraries for <code>Spring Test</code>, <code>Mockito</code>, <code>Hamcrest</code> and
+other useful third party libraries required during unit testing.</p>
+</div>
+<div class="sect4">
+<h5 id="webmvctest">@WebMvcTest</h5>
+<div class="paragraph">
+<p>To test Spring MVC Controllers <code>@WebMvcTest</code> annotation is used. This
+annotation scans for all MVC related components and will not include
+regular <code>@Component</code> classes. This is often used to test one controller
+class at a time and is combined with Mockito framework to mock the
+dependencies. Spring has <code>@MockBean</code> annotation which plays nice with
+Mockito library.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="test-class-definition">Test Class Definition</h5>
+<div class="literalblock">
+<div class="content">
+<pre>@RunWith(SpringRunner.class)
+@WebMvcTest(Books.class)
+public class BooksTest {
+
+   @Autowired
+   private MockMvc mvc;
+
+   @MockBean
+   private BookService bookService;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>@RunWith</code> defines the runner class that is to be used to run test
+cases, <code>SpringRunner</code> is the defacto choice since <code>Spring</code> is used
+pretty much for everything in the application.<br>
+<code>@WebMvcTest</code> takes the class of controller that is under test. This
+will start the web application context, embedded servlet container is
+not used and this keeps testing lightweight.<br>
+<code>MockMvc</code> is the helper class which provides syntax to call controller
+classes as HTTP requests. It also define methods for expectations on
+HTTP response.<br>
+<code>@MockBean</code> creates a Mockito mock of the <code>BookService</code> which is a
+dependency for <code>Books</code> controller. By having mock we can control the
+behavior of dependencies without calling the real method and really just
+focus on unit testing of controller class. To control the behavior of
+<code>bookService</code>, a <code>Behavior</code> nested class has been defined in this test
+cases which will be shown later.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="mockmvc-helper">MockMvc Helper</h5>
+<div class="paragraph">
+<p>Following are the usages of <code>MockMvc</code> instance <code>mvc</code> to perform unit
+testing on REST methods.</p>
+</div>
+<div id="get-method" class="paragraph">
+<p>GET Method</p>
+</div>
+<div class="paragraph">
+<p>Following test case corresponds to <code>getAllBooks()</code> method in <code>Books</code>
+controller.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>@Test
+    public void getAllBooks_NoBooks() throws Exception {
+        Behavior.set(bookService).hasNoBooks();
+        mvc
+                .perform(get("/books"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json("[]"));
+        verify(bookService, times(1)).getAllBooks();
+    }</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>.perform(..</code> is analogous to making an HTTP request to REST
+controller.<br>
+<code>get("/books")</code> defines that a HTTP GET request has to be made on
+'/books' path.<br>
+<code>.andExpect(..</code> can be used to set expectations on HTTP response
+received from controller class such as <code>status().isOk()</code> means that HTTP
+response code should be <code>200</code>.<br>
+<code>content().json([])</code> means that response body should match json content
+that is given in <code>json()</code> method.<br>
+<code>content().contentType(&#8230;&#8203;</code> means that <code>Content-Type</code> header should
+match the value as given in method.<br>
+<code>Behavior</code> is a custom class which is setting Mockito methods on
+<code>bookService</code>.</p>
+</div>
+<div id="post-method" class="paragraph">
+<p>POST Method</p>
+</div>
+<div class="paragraph">
+<p>Following test case corresponds to <code>addBook()</code> method in <code>Books</code>
+controller.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>@Test
+    public void addBook_Positive() throws Exception {
+        Behavior.set(bookService).returnSame();
+        String bookContent = mapper.writeValueAsString(effectiveJavaBook);
+        mvc
+                .perform(post("/books")
+                        .content(bookContent)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(bookContent));
+        verify(bookService, times(1)).addBook(effectiveJavaBook);
+    }</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>post(..</code> defines to make an HTTP POST request along with content and
+content-type defined in methods.<br>
+<code>mapper</code> here is the instance of <code>Jackson</code> <code>ObjectMapper</code> which allows
+for serialization and deserialization of POJOs to and from JSON.</p>
+</div>
+<div id="delete-method" class="paragraph">
+<p>DELETE Method</p>
+</div>
+<div class="paragraph">
+<p>Following test case corresponds to <code>deleteBook()</code> method in <code>Books</code>
+controller.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>@Test
+    public void deleteBook() throws Exception {
+        mvc
+                .perform(delete("/books/1234567899"))
+                .andExpect(status().isOk());
+        verify(bookService, times(1)).deleteBook(anyLong());
+    }</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>delete("/books&#8230;&#8203;")</code> defines to make an HTTP DELETE request.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="mockito-usage">Mockito Usage</h5>
+<div class="paragraph">
+<p>Let&#8217;s also explore some of the Mockito methods that are being used in
+this class.</p>
+</div>
+<div id="verify" class="paragraph">
+<p>verify()</p>
+</div>
+<div class="paragraph">
+<p><code>verify</code> method is used to verify the number of times a mock method has
+been called. This is especially useful to test conditional statements,
+since if test case does not expect that code flow to enter a certain
+condition statement then the methods inside that block should not be
+called even once.<br>
+It&#8217;s signature is <code>verify(T mock, VerificationMode mode)</code> where <code>T</code>
+corresponds to mocked bean and <code>mode</code> refers to number of times methods
+should be called. It can also be used to match the parameters received
+by mock method as shown below</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>verify(bookService, times(1)).getBookByISBN(effectiveJavaBook.getIsbnCode());</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This means that method <code>getBookByISBN</code> of bean <code>bookService</code> should be
+called only once during execution of test case. Also the parameter
+received by the method is verified by giving the exact argument as here
+<code>effectiveJavaBook.getIsbnCode()</code>.</p>
+</div>
+<div id="when-doreturn-thenreturn" class="paragraph">
+<p>when() doReturn() thenReturn()</p>
+</div>
+<div class="paragraph">
+<p>These constructs are used to set expectations on mocked beans. Let&#8217;s see
+an example first :</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>when(bookService.getBookByISBN(book.getIsbnCode())).thenReturn(book);
+when(bookService.addBook(book)).thenReturn(book);
+when(bookService.getAllBooks()).thenReturn(Collections.emptyList());
+when(bookService.addBook(any())).thenAnswer(invocationOnMock -&gt; invocationOnMock.getArguments()[0]);</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>First example defines that if <code>getBookByISBN</code> is invoked with some
+<code>isbnCode</code> then it should return the same book, since the <code>isbnCode</code> is
+also fetched from the same instance of <code>book</code>.<br>
+Second example defines that <code>addBook</code> should return the <code>book</code> instance
+if it is called with the same <code>book</code> instance.<br>
+Third example defines that <code>getAllBooks</code> should return <code>emptyList</code> if it
+is invoked.<br>
+Fourth example defines that <code>addBook</code> should return the same instance
+that it receives as parameter. Note here there is no predefined <code>book</code>
+instance so this will work for any argument passed to <code>addBook</code>, however
+in second example it will only work for that instance of <code>book</code> which
+has been used in <code>when(..</code> clause.</p>
+</div>
+<div class="paragraph">
+<p>The whole class <code>BooksTest</code> can be referred in <code>src/tests/java</code>
+directory under <code>org.gluecoders.library.rest</code> package.</p>
+</div>
+</div>
+</div>
+</div>
+
+    </div>
+
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+
+    <aside class="large-3 columns">
+
+        <h4>Posts</h4>
+        <ul id="posts" class="posts nav">
+            
+        </ul>
+
+        <div class="panel">
+            <h5>Featured</h5>
+
+            <p>Pork drumstick turkey fugiat. Tri-tip elit turducken pork chop in. Swine short ribs meatball irure bacon
+                nulla pork belly cupidatat meatloaf cow.</p>
+        </div>
+
+    </aside>
+
+    <!-- End Sidebar -->
+</div>
+
+<!-- End Main Content and Sidebar -->
+
+
+<!-- Footer -->
+
+<footer class="row">
+    <div class="large-12 columns">
+        <hr>
+        <div class="row">
+            <div class="large-12 columns">
+                <p>Footer</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="js/vendor/jquery.js"></script>
+<script src="js/foundation.min.js"></script>
+<script>
+$(document).foundation();
+var doc = document.documentElement;
+doc.setAttribute('data-useragent', navigator.userAgent);
+</script>
+</body>
+</html>
